@@ -1,6 +1,12 @@
-def main():
-    print("Hello from viagens-api!")
+from fastapi import FastAPI
+from app.route.avaliacao import avaliacao
+from app.database import engine, Base
 
+Base.metadata.create_all(bind=engine)
 
-if __name__ == "__main__":
-    main()
+app = FastAPI()
+app.include_router(avaliacao, prefix="/avaliacao", tags=["Avaliação"])
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
